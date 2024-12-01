@@ -1,0 +1,6 @@
+name: caixa_eletronico
+description: Simulador de caixa eletrônico em Dart.
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+dependencies:
+  test: ^1.21.0
