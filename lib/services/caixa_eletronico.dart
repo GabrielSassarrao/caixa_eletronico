@@ -1,31 +1,23 @@
-import 'dart:io'; // Import necessário para usar stdin
-import '../models/conta.dart'; // Importa a classe Conta corretamente
+import 'dart:io'; // Para usar stdin
+import '../models/conta.dart';
 
 class CaixaEletronico {
   Conta conta;
 
   CaixaEletronico(this.conta);
 
-  // Novo método para exibir informações do cliente e saldo
-  void verInformacoes() {
-    print('Informações do cliente:');
-    print('Nome: ${conta.cliente.nome}');
-    print('CPF: ${conta.cliente.cpf}');
-    conta.exibirSaldo();
-  }
-
   void iniciar() {
     print('Bem-vindo, ${conta.cliente.nome}!');
     int opcao;
     do {
-      print('Escolha uma opção:');
+      print('\nEscolha uma opção:');
       print('1 - Ver saldo');
-      print('2 - Depositar');
-      print('3 - Sacar');
-      print('4 - Ver informações');
-      print('5 - Sair');
+      print('2 - Ver informações');
+      print('3 - Depositar');
+      print('4 - Sacar');
+      print('5 - Investir');
+      print('6 - Sair');
 
-      // Leitura da opção do usuário
       opcao = int.parse(stdin.readLineSync()!);
 
       switch (opcao) {
@@ -33,24 +25,47 @@ class CaixaEletronico {
           conta.exibirSaldo();
           break;
         case 2:
+          conta.verInformacoes();
+          break;
+        case 3:
           print('Digite o valor para depósito:');
           double valor = double.parse(stdin.readLineSync()!);
           conta.depositar(valor);
           break;
-        case 3:
+        case 4:
           print('Digite o valor para saque:');
           double valor = double.parse(stdin.readLineSync()!);
           conta.sacar(valor);
           break;
-        case 4:
-          verInformacoes(); // Chama o método de exibição das informações
-          break;
         case 5:
+          realizarInvestimento();
+          break;
+        case 6:
           print('Saindo...');
           break;
         default:
           print('Opção inválida.');
       }
-    } while (opcao != 5); // Atualiza para 5 para permitir a opção de sair
+    } while (opcao != 6);
+  }
+
+  void realizarInvestimento() {
+    print('\n=== Investimento ===');
+    while (true) {
+      print('Digite o valor que deseja investir (Saldo atual: R\$${conta.saldo.toStringAsFixed(2)}):');
+      double valorInvestimento = double.parse(stdin.readLineSync()!);
+
+      if (valorInvestimento > 0 && valorInvestimento <= conta.saldo) {
+        bool sucesso = conta.realizarInvestimento(valorInvestimento);
+        if (sucesso) {
+          print('Investimento concluído com sucesso!');
+        } else {
+          print('Investimento não teve sucesso. O valor foi perdido.');
+        }
+        break; // Sai do loop após uma tentativa válida
+      } else {
+        print('Valor inválido ou maior que o saldo disponível. Tente novamente.');
+      }
+    }
   }
 }
