@@ -1,10 +1,18 @@
 import 'dart:io'; // Import necessário para usar stdin
-import '../models/conta.dart';
+import '../models/conta.dart'; // Importa a classe Conta corretamente
 
 class CaixaEletronico {
   Conta conta;
 
   CaixaEletronico(this.conta);
+
+  // Novo método para exibir informações do cliente e saldo
+  void verInformacoes() {
+    print('Informações do cliente:');
+    print('Nome: ${conta.cliente.nome}');
+    print('CPF: ${conta.cliente.cpf}');
+    conta.exibirSaldo();
+  }
 
   void iniciar() {
     print('Bem-vindo, ${conta.cliente.nome}!');
@@ -14,7 +22,8 @@ class CaixaEletronico {
       print('1 - Ver saldo');
       print('2 - Depositar');
       print('3 - Sacar');
-      print('4 - Sair');
+      print('4 - Ver informações');
+      print('5 - Sair');
 
       // Leitura da opção do usuário
       opcao = int.parse(stdin.readLineSync()!);
@@ -34,11 +43,14 @@ class CaixaEletronico {
           conta.sacar(valor);
           break;
         case 4:
+          verInformacoes(); // Chama o método de exibição das informações
+          break;
+        case 5:
           print('Saindo...');
           break;
         default:
           print('Opção inválida.');
       }
-    } while (opcao != 4); // Fechamento correto do laço do-while
+    } while (opcao != 5); // Atualiza para 5 para permitir a opção de sair
   }
 }
